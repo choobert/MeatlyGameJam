@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<scene nr="1">
-	<actor name="Vincent">
-		<line id="0">Hello World</line>
-		<line id="1">Some basic functionality!!</line>
-		<line id="2">Good Bye!</line>
-	</actor>
-</scene>

@@ -46,9 +46,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\ChangeScene.cs" />
+     <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\NPC_Dialog.cs" />
-     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
-     <None Include="Assets\Resources\Dialog.xml" />
+     <Compile Include="Assets\Scripts\Player.cs" />
+     <None Include="Assets\Resources\Dialogue.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Programs/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

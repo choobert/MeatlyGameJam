@@ -9,37 +9,37 @@ public class NPC_Dialog : MonoBehaviour {
 
 	
 	public Text dialogText;
+	public GameObject questObject;
+	public string xmlFileName;
 
 	private bool isTalking = false;	
 	private bool isTextScrolling = false;
 	
-	private string[] talkLines;
+	private string[] questLines;
+	private string[] completeLines;
 	
 	private int currentLine = 0;
 	private int textSpeed = 2;
 	
 	void Start() {
 	
-		TextAsset textAsset = (TextAsset) Resources.Load ("Dialog");
+		TextAsset textAsset = (TextAsset) Resources.Load (xmlFileName);
 	
 		XmlDocument xmlDoc = new XmlDocument();	
 		xmlDoc.LoadXml (textAsset.text);
 	
 		XmlNodeList nodeList = xmlDoc.GetElementsByTagName("scene");
 		
-		foreach (XmlNode sceneNode in nodeList)
-		{
-			// get actors
-			foreach (XmlNode actorNode in sceneNode.ChildNodes)
-			{
-				// Get their lines
-				talkLines = new string[actorNode.ChildNodes.Count];
-				foreach(XmlNode lineNode in actorNode.ChildNodes)
-				{
-					int lineNum = Convert.ToInt16(lineNode.Attributes["id"].Value);
-					talkLines[lineNum] = lineNode.InnerText;
-				}
-			}
+		XmlNodeList xnList = xmlDoc.SelectNodes("scene/quest/line");
+		questLines = new string[xnList.Count];
+		for(int i=0; i < xnList.Count; i++) {
+			questLines[i] = xnList[i].InnerText;
+		}
+		
+		xnList = xmlDoc.SelectNodes("scene/complete/line");
+		completeLines = new string[xnList.Count];
+		for(int i=0; i < xnList.Count; i++) {
+			completeLines[i] = xnList[i].InnerText;
 		}
 	}
 	
@@ -49,10 +49,10 @@ public class NPC_Dialog : MonoBehaviour {
 				if (isTextScrolling) {
 					// display the full line
 					isTextScrolling = false;
-					dialogText.text = talkLines[currentLine];
+					dialogText.text = questLines[currentLine];
 				}
 				else {
-					if (currentLine < talkLines.Length - 1) {
+					if (currentLine < questLines.Length - 1) {
 						currentLine++;
 						isTextScrolling = true;
 						StartCoroutine(scrollText());
@@ -62,30 +62,40 @@ public class NPC_Dialog : MonoBehaviour {
 						isTalking = false;
 						isTextScrolling = false;
 						
+						// clear out the dialogue
 						dialogText.text = "";
+						
+						// draw the path to the quest
+						questObject.GetComponent<Renderer>().enabled = true;
+						questObject.GetComponent<PolygonCollider2D>().enabled = true;
+						
+						// allow the player to move again
+						GameManager.Instance.enablePlayer();
 					}
 				}
 			}
 		}
 	}
 	
-	void OnTriggerEnter2D () {
-		isTalking = true;
-		isTextScrolling = true;
-		
-		StartCoroutine(scrollText());
-	}
+	void OnTriggerEnter2D (Collider2D aCollider) {
 	
-	void OnTriggerExit2D () {
-		 isTalking = false;
+		if (aCollider.gameObject.tag == "Player") {
+			GameManager.Instance.disablePlayer();
+		
+			isTalking = true;
+			isTextScrolling = true;
+		
+			StartCoroutine(scrollText());
+		}
 	}
 	
 	IEnumerator scrollText() {
 	
 		string displayText = "";
 		
-		for (int i = 0; i < talkLines[currentLine].Length && isTextScrolling; i++) {
-			displayText += talkLines[currentLine][i];
+		for (int i = 0; i < questLines[currentLine].Length && isTextScrolling; i++) {
+			displayText += questLines[currentLine][i];
+			//Debug.Log (displayText);
 			dialogText.text = displayText;
 			yield return new WaitForSeconds(1/textSpeed);		
 		}
