@@ -7,14 +7,13 @@ using System.Xml;
 
 public class NPC_Dialog : MonoBehaviour {
 
-	
-	public Text dialogText;
 	public GameObject questObject;
 	public string xmlFileName;
 
 	private bool isTalking = false;	
 	private bool isTextScrolling = false;
 	
+	private string[] activeLines;
 	private string[] questLines;
 	private string[] completeLines;
 	
@@ -47,10 +46,10 @@ public class NPC_Dialog : MonoBehaviour {
 				if (isTextScrolling) {
 					// display the full line
 					isTextScrolling = false;
-					dialogText.text = questLines[currentLine];
+					HUD._instance.showDialogue(activeLines[currentLine]);
 				}
 				else {
-					if (currentLine < questLines.Length - 1) {
+					if (currentLine < activeLines.Length - 1) {
 						currentLine++;
 						isTextScrolling = true;
 						StartCoroutine(scrollText());
@@ -61,7 +60,7 @@ public class NPC_Dialog : MonoBehaviour {
 						isTextScrolling = false;
 						
 						// clear out the dialogue
-						dialogText.text = "";
+						HUD._instance.showDialogue("");
 						
 						// draw the path to the quest
 						questObject.GetComponent<Renderer>().enabled = true;
@@ -78,6 +77,9 @@ public class NPC_Dialog : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D aCollider) {
 	
 		if (aCollider.gameObject.tag == "Player") {
+		
+			activeLines = GameManager.Instance.getQuestComplete() ? completeLines : questLines;
+		
 			GameManager.Instance.disablePlayer();
 		
 			isTalking = true;
@@ -91,10 +93,10 @@ public class NPC_Dialog : MonoBehaviour {
 	
 		string displayText = "";
 		
-		for (int i = 0; i < questLines[currentLine].Length && isTextScrolling; i++) {
-			displayText += questLines[currentLine][i];
+		for (int i = 0; i < activeLines[currentLine].Length && isTextScrolling; i++) {
+			displayText += activeLines[currentLine][i];
 			//Debug.Log (displayText);
-			dialogText.text = displayText;
+			HUD._instance.showDialogue(displayText);
 			yield return new WaitForSeconds(1/textSpeed);		
 		}
 		

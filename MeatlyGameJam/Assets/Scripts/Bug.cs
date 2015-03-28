@@ -3,9 +3,11 @@ using System.Collections;
 
 public class Bug : MonoBehaviour {
 
-	private Rigidbody2D myRigidbody;
-	
 	public int movementSpeed = 2;
+	public Sprite leftSprite;
+	public Sprite rightSprite;
+
+	private Rigidbody2D myRigidbody;
 	private int velocity = 1;
 
 	// Use this for initialization
@@ -26,6 +28,13 @@ public class Bug : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D aCollider) {
 		if (aCollider.gameObject.tag == "BugBoundary") {
 			velocity *= -1;
+			
+			if (velocity < 0) {
+				GetComponent<SpriteRenderer>().sprite = leftSprite;
+			}
+			else {
+				GetComponent<SpriteRenderer>().sprite = rightSprite;
+			}
 		}
 	}
 }

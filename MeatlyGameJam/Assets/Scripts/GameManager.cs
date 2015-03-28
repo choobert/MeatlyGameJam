@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 using System.Collections;
 
-public enum GameState {MainMenu, Game};
+public enum GameState {MainMenu, Game}
 public delegate void OnStateChangeHandler();
 
 public class GameManager : ScriptableObject {
@@ -11,53 +11,53 @@ public class GameManager : ScriptableObject {
 	private static GameManager _instance;
 	public event OnStateChangeHandler OnStateChange;
 	
-	private static Player player;
+	public static Player player;
 	
-	private static Text ideaText;
-	private static Text bugText;
-	private static Text gameText;
+	private static Level[] levels;
+	private static int currentLevel;
 	
-	private static int ideaCount 	= 0;
-	private static int bugCount 	= 0;
-	private static int gameCount 	= 0;
+	public static int ideaCount 	{ get; private set; }
+	public static int bugCount 		{ get; private set; }
+	public static int gameCount 	{ get; private set; }
 	
-	private static int ideasPerGame	= 10;
-	private static int bugsPerGame	= 3;
-	private static int gamesForQuest = 5;
+	public static int ideasPerGame	{ get; private set; }
+	public static int bugsPerGame	{ get; private set; }
+	public static int gamesForQuest { get; private set; }
 	
 	public GameState gameState { get; private set; }
 	
-	protected GameManager() {}
-	
+	protected GameManager() {}	
 	
 	public static GameManager Instance {
 		get {
 			if (GameManager._instance == null) {
 				GameManager._instance = ScriptableObject.CreateInstance<GameManager>();
 				
-				player = GameObject.Find("Player").GetComponent<Player>();
-				
 				DontDestroyOnLoad(GameManager._instance);
 				
-				// Save the GUI FOR-EV-OR
-				GameObject idea = GameObject.Find("IdeaCount");
-				DontDestroyOnLoad(idea);
-				ideaText = idea.GetComponent<Text>();
+				//Instantiate some values
+				ideasPerGame = 3;
+				bugsPerGame = 3;
+				gamesForQuest = 5;				
 				
-				GameObject bug = GameObject.Find("BugCount");
-				DontDestroyOnLoad(bug);
-				bugText = bug.GetComponent<Text>();
+				currentLevel = 0;
+				levels = new Level[3];
 				
-				GameObject game = GameObject.Find("GameCount");
-				DontDestroyOnLoad(game);
-				gameText = game.GetComponent<Text>();
+				levels[0] = ScriptableObject.CreateInstance<Level>();
+				levels[0].init(1, 2, 3);
+				
+				levels[1] = ScriptableObject.CreateInstance<Level>();
+				levels[1].init(2, 1, 1);
+				
+				levels[2] = ScriptableObject.CreateInstance<Level>();
+				levels[2].init(3, 1, 1);
 			}
 			
 			return GameManager._instance;
 		}
 	}
 	
-	public void SetGameState(GameState aGameState) {
+	public void setGameState(GameState aGameState) {
 		gameState = aGameState;
 		
 		if(OnStateChange != null) {
@@ -68,45 +68,62 @@ public class GameManager : ScriptableObject {
 	public void collectIdea(int aValue) {
 		ideaCount += aValue;
 		
+		string dispStr = "Collected Idea!";
+		
 		if (ideaCount >= ideasPerGame) {
 			ideaCount = 0;
 			bugCount = 0;
 			gameCount++;
+			
+			dispStr = "Completed a Game!";
+			
+			if (gameCount >= gamesForQuest) {
+				Application.LoadLevel (Application.loadedLevel -1);
+			}
 		}
 		
-		updateCountDisplay();
+		HUD._instance.updateCountDisplay(ideaCount, bugCount, gameCount, dispStr);
 	}
 	
 	public void collectBug(int aValue) {
 		bugCount += aValue;
 		
-		
-		
+		string dispStr = "Encountered Bug!";
+				
 		if (bugCount >= bugsPerGame) {
-		
-			Debug.Log("BugCount: " + bugCount + ", BugsPerGame: " + bugsPerGame);
 			bugCount = 0;
 			ideasPerGame = 0;
 			
 			if (ideaCount > 0) {
 				ideaCount = 0;
+				
+				dispStr = "Ideas Ruined!";
 			}
 			else if (gameCount > 0) {
 				gameCount--;
+				
+				dispStr = "Game Ruined!";
 			}
 		}
 		
-		updateCountDisplay();
+		HUD._instance.updateCountDisplay(ideaCount, bugCount, gameCount, dispStr);
+	}
+	
+	public void enterQuest() {
+		currentLevel = levels[currentLevel].questIndex;
+		
+		Debug.Log("Loading level: " + currentLevel);
+		
+		Application.LoadLevel (currentLevel);
+	}
+	
+	public void completeLevel() {
+		currentLevel = levels[currentLevel].nextLevelIndex;
+		Application.LoadLevel (currentLevel);
 	}
 	
 	public bool completeQuest() {
 		return gameCount >= gamesForQuest;
-	}
-	
-	private void updateCountDisplay() {
-		ideaText.text	= ideaCount.ToString();
-		bugText.text 	= bugCount.ToString();
-		gameText.text	= gameCount.ToString();
 	}
 	
 	public void enablePlayer() {
@@ -116,4 +133,27 @@ public class GameManager : ScriptableObject {
 	public void disablePlayer() {
 		player.setMoveEnabled(false);
 	}
+	
+	public Level getCurrentLevel() {
+		Debug.Log ("levels: " + levels.Length);
+		return levels[currentLevel];
+	}
+	
+	public bool getQuestComplete() {
+		return getCurrentLevel().questComplete;
+	}
+	
+	public void updateQuest() {
+		if (!getCurrentLevel().questComplete) {
+			
+			int reqGames = getCurrentLevel().gamesForQuest;		
+			if (gameCount >= reqGames) {
+				gameCount = 0; // reset the number of games the player has
+				
+				BoxCollider2D bc = GameObject.Find("LevelBlocker").GetComponent<BoxCollider2D>();
+				bc.enabled = false;
+			}
+		}
+	}
+	
 }

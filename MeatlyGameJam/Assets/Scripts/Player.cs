@@ -56,6 +56,12 @@ public class Player : MonoBehaviour {
 		Camera.main.transform.position = cameraPosition;
 	}
 	
+	void onTriggerEnter2D(Collision2D hit) {
+		if(hit.gameObject.tag == "QuestBoundary") {
+			gm.updateQuest();
+		}
+	}
+	
 	void OnCollisionEnter2D(Collision2D hit) {
 		if(hit.gameObject.tag == "Ground") {
 			isGrounded = true;
@@ -63,11 +69,12 @@ public class Player : MonoBehaviour {
 		else if(hit.gameObject.tag == "Idea") {
 			gm.collectIdea(1);
 			Destroy(hit.gameObject.transform.parent.gameObject);
-			Level.Instance.ideaCollected();
+			gm.getCurrentLevel().ideaCollected();
 		}
 		else if(hit.gameObject.tag == "Bug") {
 			gm.collectBug(1);			
 			Destroy (hit.gameObject.transform.parent.gameObject);
+			gm.getCurrentLevel().bugEncountered();
 		}
 	}
 	

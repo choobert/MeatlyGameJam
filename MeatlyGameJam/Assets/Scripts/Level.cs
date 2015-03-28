@@ -3,32 +3,36 @@ using System.Collections;
 
 public class Level : ScriptableObject {
 
-	private static Level _instance;
+	public int gamesForQuest;
+	public int questIndex;
+	public int nextLevelIndex;
+	
+	public bool questComplete = false;
 	
 	public static IdeaSpot[] ideaSpots;
+	public static BugSpot[] bugSpots;
 	
-	protected Level() {}
+	public void init (int aGamesForQuest, int aQuestIndex, int aNextLevelIndex) {
+		gamesForQuest = aGamesForQuest;
+		questIndex = aQuestIndex;
+		nextLevelIndex = aNextLevelIndex;
+	}
 	
-	public static Level Instance {
-		get {
-			if (Level._instance == null) {
-				Level._instance = ScriptableObject.CreateInstance<Level>();
-				
-				ideaSpots = GameObject.FindObjectsOfType<IdeaSpot>();
-			}
-			
-			return Level._instance;
-		}
+	public void initSpots() {
+		ideaSpots = GameObject.FindObjectsOfType<IdeaSpot>();
+		bugSpots = GameObject.FindObjectsOfType<BugSpot>();
 	}
 	
 	public void ideaCollected() {
 	
-		Debug.Log ("Creating new Idea, idea spawn location length: " + ideaSpots.Length);
-		
-		int rand = Random.Range(0, ideaSpots.Length);
-		Debug.Log ("Selecting a random number: " + rand);
+		Debug.Log ("Number idea spots: " + ideaSpots.Length);
 	
-		IdeaSpot newIdeaSpot = ideaSpots[rand];
-		GameObject newIdea = (GameObject) Instantiate(Resources.Load ("Idea"), newIdeaSpot.transform.position, Quaternion.identity);
+		IdeaSpot newIdeaSpot = ideaSpots[Random.Range(0, ideaSpots.Length)];
+		Instantiate(Resources.Load ("Idea"), newIdeaSpot.transform.position, Quaternion.identity);
+	}
+	
+	public void bugEncountered() {
+		BugSpot newBugSpot = bugSpots[Random.Range(0, ideaSpots.Length)];
+		Instantiate(Resources.Load ("Bug"), newBugSpot.transform.position, Quaternion.identity);
 	}
 }
