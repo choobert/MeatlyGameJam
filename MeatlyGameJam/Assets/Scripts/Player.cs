@@ -62,12 +62,12 @@ public class Player : MonoBehaviour {
 		}
 		else if(hit.gameObject.tag == "Idea") {
 			gm.collectIdea(1);
-			Destroy(hit.gameObject);
+			Destroy(hit.gameObject.transform.parent.gameObject);
 			Level.Instance.ideaCollected();
 		}
 		else if(hit.gameObject.tag == "Bug") {
-			gm.collectBug(1);
-			Destroy (hit.gameObject);
+			gm.collectBug(1);			
+			Destroy (hit.gameObject.transform.parent.gameObject);
 		}
 	}
 	

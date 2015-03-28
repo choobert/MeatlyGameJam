@@ -37,9 +37,20 @@ public class GameManager : ScriptableObject {
 				
 				player = GameObject.Find("Player").GetComponent<Player>();
 				
-				ideaText = GameObject.Find("IdeaCount").GetComponent<Text>();
-				bugText = GameObject.Find("BugCount").GetComponent<Text>();
-				gameText = GameObject.Find("GameCount").GetComponent<Text>();
+				DontDestroyOnLoad(GameManager._instance);
+				
+				// Save the GUI FOR-EV-OR
+				GameObject idea = GameObject.Find("IdeaCount");
+				DontDestroyOnLoad(idea);
+				ideaText = idea.GetComponent<Text>();
+				
+				GameObject bug = GameObject.Find("BugCount");
+				DontDestroyOnLoad(bug);
+				bugText = bug.GetComponent<Text>();
+				
+				GameObject game = GameObject.Find("GameCount");
+				DontDestroyOnLoad(game);
+				gameText = game.GetComponent<Text>();
 			}
 			
 			return GameManager._instance;
