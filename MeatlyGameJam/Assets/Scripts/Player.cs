@@ -50,6 +50,10 @@ public class Player : MonoBehaviour {
 			myRigidbody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
 			isJumping = false;
 		}
+		
+		Vector3 cameraPosition = this.gameObject.transform.position;
+		cameraPosition.z = -10;
+		Camera.main.transform.position = cameraPosition;
 	}
 	
 	void OnCollisionEnter2D(Collision2D hit) {
@@ -59,6 +63,7 @@ public class Player : MonoBehaviour {
 		else if(hit.gameObject.tag == "Idea") {
 			gm.collectIdea(1);
 			Destroy(hit.gameObject);
+			Level.Instance.ideaCollected();
 		}
 		else if(hit.gameObject.tag == "Bug") {
 			gm.collectBug(1);

@@ -12,6 +12,7 @@ public class GameManager : ScriptableObject {
 	public event OnStateChangeHandler OnStateChange;
 	
 	private static Player player;
+	
 	private static Text ideaText;
 	private static Text bugText;
 	private static Text gameText;
@@ -20,9 +21,9 @@ public class GameManager : ScriptableObject {
 	private static int bugCount 	= 0;
 	private static int gameCount 	= 0;
 	
-	private static int ideasPerGame = 10;
-	private static int bugsPerGame 	= 3;
-	private static int gameForQuest = 5;
+	private static int ideasPerGame	= 10;
+	private static int bugsPerGame	= 3;
+	private static int gamesForQuest = 5;
 	
 	public GameState gameState { get; private set; }
 	
@@ -35,6 +36,7 @@ public class GameManager : ScriptableObject {
 				GameManager._instance = ScriptableObject.CreateInstance<GameManager>();
 				
 				player = GameObject.Find("Player").GetComponent<Player>();
+				
 				ideaText = GameObject.Find("IdeaCount").GetComponent<Text>();
 				bugText = GameObject.Find("BugCount").GetComponent<Text>();
 				gameText = GameObject.Find("GameCount").GetComponent<Text>();
@@ -57,7 +59,7 @@ public class GameManager : ScriptableObject {
 		
 		if (ideaCount >= ideasPerGame) {
 			ideaCount = 0;
-			bugsPerGame = 0;
+			bugCount = 0;
 			gameCount++;
 		}
 		
@@ -65,19 +67,29 @@ public class GameManager : ScriptableObject {
 	}
 	
 	public void collectBug(int aValue) {
-		bugCount -= aValue;
+		bugCount += aValue;
+		
+		
 		
 		if (bugCount >= bugsPerGame) {
+		
+			Debug.Log("BugCount: " + bugCount + ", BugsPerGame: " + bugsPerGame);
 			bugCount = 0;
 			ideasPerGame = 0;
-			gameCount--;
 			
-			if(gameCount < 0) {
-				gameCount = 0;
+			if (ideaCount > 0) {
+				ideaCount = 0;
+			}
+			else if (gameCount > 0) {
+				gameCount--;
 			}
 		}
 		
 		updateCountDisplay();
+	}
+	
+	public bool completeQuest() {
+		return gameCount >= gamesForQuest;
 	}
 	
 	private void updateCountDisplay() {

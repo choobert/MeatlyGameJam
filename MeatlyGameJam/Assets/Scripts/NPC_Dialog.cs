@@ -27,8 +27,6 @@ public class NPC_Dialog : MonoBehaviour {
 	
 		XmlDocument xmlDoc = new XmlDocument();	
 		xmlDoc.LoadXml (textAsset.text);
-	
-		XmlNodeList nodeList = xmlDoc.GetElementsByTagName("scene");
 		
 		XmlNodeList xnList = xmlDoc.SelectNodes("scene/quest/line");
 		questLines = new string[xnList.Count];
