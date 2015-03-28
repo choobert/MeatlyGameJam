@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene nr="1">
+	<quest>
+		<line id="0">Hmmm.. Well you're pretty good at what you do.</line>
+		<line id="1">You may think you have made it to the big time,</line>
+		<line id="2">but kid, you ain't seen nothing yet. Come see me</line>
+		<line id="3">after you have completed 7 more games, but now the</line>
+		<line id="4">stakes are higher. It now takes 5 ideas make a game.</line>
+		<line id="5">Head down the rabbit hole where good ideas are always dropping by.</line>
+	</quest>
+	<complete>
+		<line id="0">Congratulations! You're ready for the big time!</line>
+		<line id="1">Continue past me to Too Big Too Fail Corp.</line>
+	</complete>
+</scene>

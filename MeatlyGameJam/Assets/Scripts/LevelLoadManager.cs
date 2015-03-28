@@ -45,6 +45,21 @@ public class LevelLoadManager : MonoBehaviour {
 			mainMenu.enabled = false;
 			
 			GameManager.player = GameObject.Find("Player").GetComponent<Player>();
+			
+			gm.getCurrentLevel().spawnEnemiesAndIdeas();
+			
+			if ( aLevel < 3 ) {
+				HUD._instance.updateLevelDescription("Home Dev");
+			}
+			else if ( aLevel < 5) {
+				HUD._instance.updateLevelDescription("Indie Dev");
+			}			
+			else {
+				HUD._instance.updateLevelDescription("AAA Dev");
+				
+				// since we just loaded the last level we need to reset all of the quests
+				gm.resetQuests();
+			}			
 		}
 		else {
 			gm.setGameState(GameState.MainMenu);

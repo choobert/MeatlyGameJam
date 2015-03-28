@@ -1,11 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Level.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GameManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\GameManager.cs" Line="97" Column="30" />
-      <File FileName="Assets\Scripts\Level.cs" Line="6" Column="9" />
-      <File FileName="Assets\Resources\Dialogue.xml" Line="7" Column="69" />
-      <File FileName="Assets\Scripts\MainMenu.cs" Line="8" Column="36" />
+      <File FileName="Assets\Resources\GameOver.xml" Line="10" Column="9" />
+      <File FileName="Assets\Scripts\LevelLoadManager.cs" Line="61" Column="22" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="40" Column="30" />
+      <File FileName="Assets\Scripts\NPC_Dialog.cs" Line="98" Column="5" />
+      <File FileName="Assets\Scripts\Bug.cs" Line="33" Column="5" />
+      <File FileName="Assets\Scripts\Player.cs" Line="83" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

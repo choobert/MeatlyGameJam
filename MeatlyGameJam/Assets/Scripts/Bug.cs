@@ -37,4 +37,10 @@ public class Bug : MonoBehaviour {
 			}
 		}
 	}
+	
+	void OnCollisionEnter2D(Collision2D hit) {
+		if(hit.gameObject.tag == "Bug") {
+			velocity *= -1;
+		}
+	}
 }

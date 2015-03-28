@@ -7,6 +7,7 @@ public class HUD : MonoBehaviour {
 
 	private static Text alertText;
 	private static Text dialogueText;
+	private static Text levelText;
 	
 	private static Text ideaText;
 	private static Text bugText;
@@ -18,7 +19,8 @@ public class HUD : MonoBehaviour {
 	void Start () {
 		HUD._instance = this;
 		
-		alertText 	= GameObject.Find ("AlertMessage").GetComponent<Text>();
+		alertText 	= GameObject.Find("AlertMessage").GetComponent<Text>();
+		levelText 	= GameObject.Find("LevelDescription").GetComponent<Text>(); 
 		ideaText 	= GameObject.Find("IdeaCount").GetComponent<Text>();
 		bugText 	= GameObject.Find("BugCount").GetComponent<Text>();
 		gameText 	= GameObject.Find("GameCount").GetComponent<Text>();
@@ -48,5 +50,9 @@ public class HUD : MonoBehaviour {
 		}
 		
 		dialogueText.text = aMessage;
+	}
+	
+	public void updateLevelDescription(string aLevel) {
+		levelText.text = aLevel;
 	}
 }

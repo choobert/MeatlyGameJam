@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene nr="1">
+	<quest>
+		<line id="0">Sooooo remember all that money you were promised?</line>
+		<line id="1">Well, it turns out we made one too many TV show games....</line>
+		<line id="3">We're closing shop. You're fired.</line>
+	</quest>
+	<complete>
+	</complete>
+</scene>

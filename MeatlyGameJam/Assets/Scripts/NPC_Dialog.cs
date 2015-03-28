@@ -8,6 +8,11 @@ using System.Xml;
 public class NPC_Dialog : MonoBehaviour {
 
 	public GameObject questObject;
+	public Sprite happySprite;
+	
+	public bool questObjectAppear = true;
+	public bool questObjectDisappear = false;
+	
 	public string xmlFileName;
 
 	private bool isTalking = false;	
@@ -62,9 +67,18 @@ public class NPC_Dialog : MonoBehaviour {
 						// clear out the dialogue
 						HUD._instance.showDialogue("");
 						
-						// draw the path to the quest
-						questObject.GetComponent<Renderer>().enabled = true;
-						questObject.GetComponent<PolygonCollider2D>().enabled = true;
+						// draw the path to the quest if we havent completed it already
+						if (! GameManager.Instance.getQuestComplete()) {
+							if(questObjectAppear) {
+								questObject.GetComponent<Renderer>().enabled = true;
+								questObject.GetComponent<PolygonCollider2D>().enabled = true;
+							}
+							
+							if(questObjectDisappear) {
+								Destroy(questObject);
+							}
+						}
+						
 						
 						// allow the player to move again
 						GameManager.Instance.enablePlayer();
@@ -78,7 +92,13 @@ public class NPC_Dialog : MonoBehaviour {
 	
 		if (aCollider.gameObject.tag == "Player") {
 		
-			activeLines = GameManager.Instance.getQuestComplete() ? completeLines : questLines;
+			if (GameManager.Instance.getQuestComplete()) {
+				activeLines =  completeLines;
+				GetComponent<SpriteRenderer>().sprite = happySprite;
+			}
+			else {
+				activeLines = questLines;
+			}
 		
 			GameManager.Instance.disablePlayer();
 		

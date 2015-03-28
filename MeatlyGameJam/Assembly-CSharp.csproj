@@ -49,6 +49,8 @@
      <Compile Include="Assets\Scripts\Bug.cs" />
      <Compile Include="Assets\Scripts\BugSpot.cs" />
      <Compile Include="Assets\Scripts\ChangeScene.cs" />
+     <Compile Include="Assets\Scripts\FreeFallSpot.cs" />
+     <Compile Include="Assets\Scripts\FreefallObject.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\HUD.cs" />
      <Compile Include="Assets\Scripts\Idea.cs" />
@@ -58,6 +60,8 @@
      <Compile Include="Assets\Scripts\MainMenu.cs" />
      <Compile Include="Assets\Scripts\NPC_Dialog.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
+     <None Include="Assets\Resources\Indee.xml" />
+     <None Include="Assets\Resources\GameOver.xml" />
      <None Include="Assets\Resources\Dialogue.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Programs/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

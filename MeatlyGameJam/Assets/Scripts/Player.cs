@@ -56,9 +56,16 @@ public class Player : MonoBehaviour {
 		Camera.main.transform.position = cameraPosition;
 	}
 	
-	void onTriggerEnter2D(Collision2D hit) {
+	void OnTriggerEnter2D(Collider2D hit) {
 		if(hit.gameObject.tag == "QuestBoundary") {
+			Debug.Log ("Update Quest");
+		
 			gm.updateQuest();
+		}
+		else if (hit.gameObject.tag == "AdvanceBoundary") {
+			Debug.Log ("Completed level!!");
+			
+			gm.completeLevel();
 		}
 	}
 	
@@ -68,13 +75,23 @@ public class Player : MonoBehaviour {
 		}
 		else if(hit.gameObject.tag == "Idea") {
 			gm.collectIdea(1);
-			Destroy(hit.gameObject.transform.parent.gameObject);
+			Destroy(hit.gameObject);
 			gm.getCurrentLevel().ideaCollected();
 		}
 		else if(hit.gameObject.tag == "Bug") {
 			gm.collectBug(1);			
-			Destroy (hit.gameObject.transform.parent.gameObject);
+			Destroy (hit.gameObject);
 			gm.getCurrentLevel().bugEncountered();
+		}
+		else if (hit.gameObject.tag == "FreefallIdea") {
+			gm.collectIdea(1);
+			Destroy (hit.gameObject);
+			gm.getCurrentLevel().createRandomFreeFall();
+		}
+		else if (hit.gameObject.tag == "FreefallBug") {
+			gm.collectBug(1);
+			Destroy (hit.gameObject);
+			gm.getCurrentLevel().createRandomFreeFall();
 		}
 	}
 	
