@@ -20,10 +20,6 @@ public class GameManager : ScriptableObject {
 	public static int bugCount 		{ get; private set; }
 	public static int gameCount 	{ get; private set; }
 	
-	public static int ideasPerGame	{ get; private set; }
-	public static int bugsPerGame	{ get; private set; }
-	public static int gamesForQuest { get; private set; }
-	
 	public GameState gameState { get; private set; }
 	
 	protected GameManager() {}	
@@ -36,21 +32,17 @@ public class GameManager : ScriptableObject {
 				DontDestroyOnLoad(GameManager._instance);
 				
 				//Instantiate some values
-				ideasPerGame = 3;
-				bugsPerGame = 3;
-				gamesForQuest = 5;				
-				
 				currentLevel = 0;
 				levels = new Level[3];
 				
 				levels[0] = ScriptableObject.CreateInstance<Level>();
-				levels[0].init(1, 2, 3);
+				levels[0].init(1, 3, 2, 5, 1, 2);
 				
 				levels[1] = ScriptableObject.CreateInstance<Level>();
-				levels[1].init(2, 1, 1);
+				levels[1].init(2, 3, 2, 5, 0, 0);
 				
 				levels[2] = ScriptableObject.CreateInstance<Level>();
-				levels[2].init(3, 1, 1);
+				levels[2].init(3, 5, 3, 7, 0, 0);
 			}
 			
 			return GameManager._instance;
@@ -70,14 +62,14 @@ public class GameManager : ScriptableObject {
 		
 		string dispStr = "Collected Idea!";
 		
-		if (ideaCount >= ideasPerGame) {
+		if (ideaCount >= levels[currentLevel].ideasPerGame) {
 			ideaCount = 0;
 			bugCount = 0;
 			gameCount++;
 			
 			dispStr = "Completed a Game!";
 			
-			if (gameCount >= gamesForQuest) {
+			if (gameCount >= getCurrentLevel().gamesForQuest) {
 				Application.LoadLevel (Application.loadedLevel -1);
 			}
 		}
@@ -89,10 +81,10 @@ public class GameManager : ScriptableObject {
 		bugCount += aValue;
 		
 		string dispStr = "Encountered Bug!";
+		Debug.Log ("BugCount: " + bugCount + ", BugsPerGame: " + getCurrentLevel().bugsPerGame);
 				
-		if (bugCount >= bugsPerGame) {
+		if (bugCount >= getCurrentLevel().bugsPerGame) {
 			bugCount = 0;
-			ideasPerGame = 0;
 			
 			if (ideaCount > 0) {
 				ideaCount = 0;
@@ -110,11 +102,11 @@ public class GameManager : ScriptableObject {
 	}
 	
 	public void enterQuest() {
-		currentLevel = levels[currentLevel].questIndex;
+		currentLevel = getCurrentLevel().questLevelIndex;
 		
 		Debug.Log("Loading level: " + currentLevel);
 		
-		Application.LoadLevel (currentLevel);
+		Application.LoadLevel (getCurrentLevel().levelIndex);
 	}
 	
 	public void completeLevel() {
@@ -123,7 +115,7 @@ public class GameManager : ScriptableObject {
 	}
 	
 	public bool completeQuest() {
-		return gameCount >= gamesForQuest;
+		return gameCount >= getCurrentLevel().gamesForQuest;
 	}
 	
 	public void enablePlayer() {

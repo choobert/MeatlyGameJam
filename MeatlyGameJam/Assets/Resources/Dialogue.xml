@@ -4,9 +4,9 @@
 		<line id="0">Hello, I hear you want to interview at InDee Games...</line>
 		<line id="1">That's FANTASTIC!!</line>
 		<line id="2">But first, you must create 5 awesome games.</line>
-		<line id="3">Enter the dream world and get inspired, but remember</line>
-		<line id="4">It takes 10 good ideas to create a game,</line>
-		<line id="5">and only 3 bugs to kill one.</line>
+		<line id="3">Enter the dream world and get inspired, but remember,</line>
+		<line id="4">it takes 3 good ideas to create a game,</line>
+		<line id="5">and only 2 bugs to destroy it.</line>
 	</quest>
 	<complete>
 		<line id="0">Congratulations! You're hired!</line>

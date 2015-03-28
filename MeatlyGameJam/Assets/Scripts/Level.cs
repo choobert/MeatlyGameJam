@@ -3,8 +3,13 @@ using System.Collections;
 
 public class Level : ScriptableObject {
 
+	public int levelIndex;
+
+	public int ideasPerGame;
+	public int bugsPerGame;
 	public int gamesForQuest;
-	public int questIndex;
+	
+	public int questLevelIndex;
 	public int nextLevelIndex;
 	
 	public bool questComplete = false;
@@ -12,9 +17,14 @@ public class Level : ScriptableObject {
 	public static IdeaSpot[] ideaSpots;
 	public static BugSpot[] bugSpots;
 	
-	public void init (int aGamesForQuest, int aQuestIndex, int aNextLevelIndex) {
+	public void init (int aLevelIndex, int aIdeasPerGame, int aBugsPerGame, int aGamesForQuest, int aQuestLevelIndex, int aNextLevelIndex) {
+		levelIndex = aLevelIndex;
+		
+		ideasPerGame = aIdeasPerGame;
+		bugsPerGame = aBugsPerGame;
 		gamesForQuest = aGamesForQuest;
-		questIndex = aQuestIndex;
+		
+		questLevelIndex = aQuestLevelIndex;
 		nextLevelIndex = aNextLevelIndex;
 	}
 	
