@@ -9,6 +9,12 @@ public class Player : MonoBehaviour {
 	private GameManager gm;
 	
 	private Rigidbody2D myRigidbody;
+	
+	private AudioSource audioSource;
+	public AudioClip ideaSound;
+	public AudioClip bugSound;
+	public AudioClip gameSound;
+	
 	private Animator anim;
 	private int animVelocity;
 	
@@ -16,15 +22,14 @@ public class Player : MonoBehaviour {
 	private bool isJumping = false;
 	private bool isGrounded = false;
 	
-	public int ideaCount = 0;
-	public int bugCount = 0;
-	public int gameCount = 0;
-	
 	void Awake () {
 	
 		gm = GameManager.Instance;
 		
 		myRigidbody = GetComponent<Rigidbody2D>();
+		
+		audioSource = GetComponent<AudioSource>();
+		
 		anim = GetComponent<Animator>();
 		animVelocity = Animator.StringToHash("Velocity");
 	}
@@ -97,5 +102,9 @@ public class Player : MonoBehaviour {
 	
 	public void setMoveEnabled(bool aBool) {
 		isMoveEnabled = aBool;
+	}
+	
+	public AudioSource getAudioSource() {
+		return audioSource;
 	}
 }

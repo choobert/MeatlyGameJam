@@ -74,6 +74,7 @@ public class GameManager : ScriptableObject {
 		ideaCount += aValue;
 		
 		string dispStr = "Collected Idea!";
+		AudioClip sound = player.ideaSound;
 		
 		if (ideaCount >= levels[currentLevel].ideasPerGame) {
 			ideaCount = 0;
@@ -81,6 +82,7 @@ public class GameManager : ScriptableObject {
 			gameCount++;
 			
 			dispStr = "Completed a Game!";
+			sound = player.gameSound;
 			
 			if (gameCount >= getCurrentLevel().gamesForQuest) {
 				dispStr = "Completed all Games!";
@@ -89,14 +91,14 @@ public class GameManager : ScriptableObject {
 			}
 		}
 		
+		player.getAudioSource().PlayOneShot(sound, 1.0f);
 		HUD._instance.updateCountDisplay(ideaCount, bugCount, gameCount, dispStr);
 	}
 	
 	public void collectBug(int aValue) {
 		bugCount += aValue;
 		
-		string dispStr = "Encountered Bug!";
-		Debug.Log ("BugCount: " + bugCount + ", BugsPerGame: " + getCurrentLevel().bugsPerGame);
+		string dispStr = "Bug Report!";
 				
 		if (bugCount >= getCurrentLevel().bugsPerGame) {
 			bugCount = 0;
@@ -113,6 +115,7 @@ public class GameManager : ScriptableObject {
 			}
 		}
 		
+		player.getAudioSource().PlayOneShot(player.bugSound, 1.0f);
 		HUD._instance.updateCountDisplay(ideaCount, bugCount, gameCount, dispStr);
 	}
 	
